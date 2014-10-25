@@ -1,6 +1,8 @@
 var gulp = require('gulp'),
   gutil = require('gulp-util'),
   ts = require('gulp-typescript'),
+  less = require('gulp-less'),
+  minifyCSS = require('gulp-minify-css'),
   concat = require('gulp-concat-sourcemap'),
   sourcemaps = require('gulp-sourcemaps'),
   processhtml = require('gulp-processhtml'),
@@ -8,11 +10,13 @@ var gulp = require('gulp'),
   open = require("gulp-open"),
   del = require('del'),
   uglify = require('gulp-uglifyjs'),
-  deploy = require('gulp-gh-pages');
+  deploy = require('gulp-gh-pages'),
+  runSequence = require('run-sequence');
 
 var paths = {
   assets: 'src/assets/**/*',
-  css: 'src/css/*.css',
+  less: 'src/css/main.less',
+  index: 'src/index.html',
   libs: [
     'src/vendor/phaser-official/build/phaser.min.js'
   ],
@@ -22,10 +26,10 @@ var paths = {
 };
 
 gulp.task('clean', function (cb) {
-  del([paths.build, paths.dist], cb);
+  return del([paths.build, paths.dist], cb);
 });
 
-gulp.task('copy', ['clean', 'typescript'], function () {
+gulp.task('copy', function () {
   return gulp.src(paths.assets)
     .pipe(gulp.dest(paths.dist + 'assets'));
 });
@@ -34,11 +38,11 @@ var tsProject = ts.createProject({
   declarationFiles: true,
   noExternalResolve: true,
   sortOutput: true,
-  sourceRoot: '../src/scripts'
+  sourceRoot: '../scripts'
 });
 
 gulp.task('typescript', function () {
-  var tsResult = gulp.src(paths.ts, {base: 'src'})
+  var tsResult = gulp.src(paths.ts)
     .pipe(sourcemaps.init())
     .pipe(ts(tsProject));
 
@@ -48,9 +52,15 @@ gulp.task('typescript', function () {
     .pipe(gulp.dest(paths.build));
 });
 
-gulp.task('processhtml', ['clean'], function () {
-  return gulp.src('src/index.html')
-    .pipe(processhtml('index.html'))
+gulp.task('less', function () {
+  return gulp.src(paths.less)
+    .pipe(less())
+    .pipe(gulp.dest(paths.build));
+});
+
+gulp.task('processhtml', function () {
+  return gulp.src(paths.index)
+    .pipe(processhtml())
     .pipe(gulp.dest(paths.dist));
 });
 
@@ -61,7 +71,8 @@ gulp.task('reload', ['typescript'], function () {
 
 gulp.task('watch', function () {
   gulp.watch(paths.ts, ['typescript', 'reload']);
-  gulp.watch(['./src/index.html', paths.css], ['reload']);
+  gulp.watch(paths.less, ['less', 'reload']);
+  gulp.watch(paths.index, ['reload']);
 });
 
 gulp.task('connect', function () {
@@ -72,22 +83,34 @@ gulp.task('connect', function () {
   });
 });
 
-gulp.task("open", function(){
-  gulp.src("./src/index.html")
-    .pipe(open("", { url: "http://localhost:9000"}));
+gulp.task("open", function () {
+  gulp.src(paths.index)
+    .pipe(open("", {url: "http://localhost:9000"}));
 });
 
-gulp.task('compress', ['typescript'], function () {
-  return gulp.src([paths.libs[0], paths.build + 'main.js'])
+gulp.task('minifyJs', ['typescript'], function () {
+  return gulp.src([paths.build + 'main.js'].concat(paths.libs))
     .pipe(uglify('all.min.js', {outSourceMap: false}))
     .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('deploy', ['build'], function () {
+gulp.task('minifyCss', ['less'], function () {
+  return gulp.src(paths.build + 'main.css')
+    .pipe(minifyCSS())
+    .pipe(gulp.dest(paths.dist))
+});
+
+gulp.task('deploy', function () {
   return gulp.src('./dist/**/*')
     .pipe(deploy());
 });
 
-gulp.task('default', ['typescript', 'connect', 'watch', 'open']);
-gulp.task('build', ['typescript', 'copy', 'compress', 'processhtml']);
-gulp.task('dist', ['build', 'deploy']);
+gulp.task('default', function() {
+  runSequence('clean', ['typescript', 'less', 'connect', 'watch'], 'open');
+});
+gulp.task('build', function() {
+  runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
+});
+gulp.task('dist', function() {
+  runSequence('build', 'deploy');
+});

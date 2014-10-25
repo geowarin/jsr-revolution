@@ -13,6 +13,7 @@
     "gulp-concat-sourcemap": "^1.3.1",
     "gulp-connect": "*",
     "gulp-gh-pages": "^0.4.0",
+    "gulp-less": "^1.3.6",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
     "gulp-open": "^0.3.0",
@@ -21,7 +22,8 @@
     "gulp-typescript": "^2.1.0",
     "gulp-uglifyjs": "^0.4.4",
     "gulp-util": "*",
-    "gulp-watch": "*"
+    "gulp-watch": "*",
+    "run-sequence": "^1.0.1"
   },
   "scripts": {
     "post-install": "node ./node_modules/bower/bin/bower install",
