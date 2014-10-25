@@ -5,6 +5,7 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   processhtml = require('gulp-processhtml'),
   connect = require('gulp-connect'),
+  open = require("gulp-open"),
   del = require('del'),
   uglify = require('gulp-uglifyjs'),
   deploy = require('gulp-gh-pages');
@@ -36,7 +37,7 @@ var tsProject = ts.createProject({
   sourceRoot: '../src/scripts'
 });
 
-gulp.task('typescript', ['clean'], function () {
+gulp.task('typescript', function () {
   var tsResult = gulp.src(paths.ts, {base: 'src'})
     .pipe(sourcemaps.init())
     .pipe(ts(tsProject));
@@ -53,14 +54,14 @@ gulp.task('processhtml', ['clean'], function () {
     .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('reload', function () {
+gulp.task('reload', ['typescript'], function () {
   gulp.src('src/*.html')
     .pipe(connect.reload());
 });
 
 gulp.task('watch', function () {
-  gulp.watch(paths.ts, ['typescript']);
-  gulp.watch(['./src/index.html', paths.css, paths.ts], ['reload']);
+  gulp.watch(paths.ts, ['typescript', 'reload']);
+  gulp.watch(['./src/index.html', paths.css], ['reload']);
 });
 
 gulp.task('connect', function () {
@@ -69,6 +70,11 @@ gulp.task('connect', function () {
     port: 9000,
     livereload: true
   });
+});
+
+gulp.task("open", function(){
+  gulp.src("./src/index.html")
+    .pipe(open("", { url: "http://localhost:9000"}));
 });
 
 gulp.task('compress', ['typescript'], function () {
@@ -82,6 +88,6 @@ gulp.task('deploy', ['build'], function () {
     .pipe(deploy());
 });
 
-gulp.task('default', ['typescript', 'connect', 'watch']);
+gulp.task('default', ['typescript', 'connect', 'watch', 'open']);
 gulp.task('build', ['typescript', 'copy', 'compress', 'processhtml']);
 gulp.task('dist', ['build', 'deploy']);

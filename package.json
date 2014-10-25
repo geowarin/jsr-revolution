@@ -15,6 +15,7 @@
     "gulp-gh-pages": "^0.4.0",
     "gulp-minify-css": "*",
     "gulp-minify-html": "*",
+    "gulp-open": "^0.3.0",
     "gulp-processhtml": "*",
     "gulp-sourcemaps": "^1.2.4",
     "gulp-typescript": "^2.1.0",
