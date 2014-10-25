@@ -28,7 +28,7 @@ gulp.task('copy', ['clean'], function () {
     .pipe(gulp.dest(paths.build + 'assets'))
     .on('error', gutil.log);
   gulp.src(paths.libs)
-    .pipe(gulp.dest(paths.build + 'vendor'))
+    .pipe(gulp.dest(paths.build))
     .on('error', gutil.log);
 });
 
@@ -48,12 +48,7 @@ gulp.task('typescript', ['clean'], function () {
   return tsResult.js
     .pipe(concat('main.min.js'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(paths.build + 'js'));
-
-  //return eventStream.merge(
-  //  tsResult.dts.pipe(gulp.dest(paths.build + 'defs')),
-  //  tsResult.js.pipe(gulp.dest(paths.build + 'js'))
-  //);
+    .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('processhtml', ['clean'], function () {
@@ -63,18 +58,24 @@ gulp.task('processhtml', ['clean'], function () {
     .on('error', gutil.log);
 });
 
+gulp.task('reload', function () {
+  gulp.src('src/*.html')
+    .pipe(connect.reload())
+    .on('error', gutil.log);
+});
+
 gulp.task('watch', function () {
   gulp.watch(paths.ts, ['typescript']);
+  gulp.watch(['./src/index.html', paths.css, paths.ts], ['reload']);
 });
 
 gulp.task('connect', function () {
   connect.server({
-    //root: [__dirname + '/src', paths.build + 'js'],
-    root: [paths.build],
+    root: [__dirname + '/src', paths.build],
     port: 9000,
     livereload: true
   });
 });
 
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['typescript', 'connect', 'watch']);
 gulp.task('build', ['copy', 'typescript', 'processhtml']);

@@ -8,7 +8,7 @@
 module JsrRevolution {
   export class Game extends Phaser.Game {
     constructor() {
-      super(800, 600, Phaser.AUTO, 'game-div');
+      super(800, 600, Phaser.AUTO, 'jsr-revolution-game');
 
       this.state.add('boot', State.Boot);
       this.state.add('preload', State.Preload);

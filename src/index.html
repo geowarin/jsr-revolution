@@ -1,12 +1,20 @@
 <!DOCTYPE HTML>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8"/>
     <title>jsr-revolution</title>
-    <script src="vendor/phaser.min.js"></script>
-    <script src="js/main.min.js"></script>
-  </head>
-  <body>
-    <div id="game-content"></div>
-  </body>
+</head>
+<body>
+    <div id="jsr-revolution-game" class="game"></div>
+
+    <!-- build:remove -->
+    <script src="http://localhost:35729/livereload.js"></script>
+    <!-- /build -->
+
+    <!-- build:js phaser.min.js -->
+    <script src="vendor/phaser-official/build/phaser.js"></script>
+    <!-- /build -->
+
+    <script src="main.min.js"></script>
+</body>
 </html>
