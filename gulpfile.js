@@ -109,8 +109,5 @@ gulp.task('default', function() {
   runSequence('clean', ['typescript', 'less', 'connect', 'watch'], 'open');
 });
 gulp.task('build', function() {
-  runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
-});
-gulp.task('dist', function() {
-  runSequence('build', 'deploy');
+  return runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
 });
