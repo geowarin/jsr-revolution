@@ -6,9 +6,10 @@ var gulp = require('gulp'),
   processhtml = require('gulp-processhtml'),
   connect = require('gulp-connect'),
   del = require('del'),
-  clean = require('gulp-clean');
+  uglify = require('gulp-uglifyjs'),
+  deploy = require('gulp-gh-pages');
 
-paths = {
+var paths = {
   assets: 'src/assets/**/*',
   css: 'src/css/*.css',
   libs: [
@@ -20,23 +21,18 @@ paths = {
 };
 
 gulp.task('clean', function (cb) {
-  del([paths.build], cb);
+  del([paths.build, paths.dist], cb);
 });
 
-gulp.task('copy', ['clean'], function () {
-  gulp.src(paths.assets)
-    .pipe(gulp.dest(paths.build + 'assets'))
-    .on('error', gutil.log);
-  gulp.src(paths.libs)
-    .pipe(gulp.dest(paths.build))
-    .on('error', gutil.log);
+gulp.task('copy', ['clean', 'typescript'], function () {
+  return gulp.src(paths.assets)
+    .pipe(gulp.dest(paths.dist + 'assets'));
 });
 
 var tsProject = ts.createProject({
   declarationFiles: true,
   noExternalResolve: true,
   sortOutput: true,
-  //module: 'commonjs',
   sourceRoot: '../src/scripts'
 });
 
@@ -46,22 +42,20 @@ gulp.task('typescript', ['clean'], function () {
     .pipe(ts(tsProject));
 
   return tsResult.js
-    .pipe(concat('main.min.js'))
+    .pipe(concat('main.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('processhtml', ['clean'], function () {
-  gulp.src('src/index.html')
+  return gulp.src('src/index.html')
     .pipe(processhtml('index.html'))
-    .pipe(gulp.dest(paths.build))
-    .on('error', gutil.log);
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('reload', function () {
   gulp.src('src/*.html')
-    .pipe(connect.reload())
-    .on('error', gutil.log);
+    .pipe(connect.reload());
 });
 
 gulp.task('watch', function () {
@@ -77,5 +71,17 @@ gulp.task('connect', function () {
   });
 });
 
+gulp.task('compress', ['typescript'], function () {
+  return gulp.src([paths.libs[0], paths.build + 'main.js'])
+    .pipe(uglify('all.min.js', {outSourceMap: false}))
+    .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('deploy', ['build'], function () {
+  return gulp.src('./dist/**/*')
+    .pipe(deploy());
+});
+
 gulp.task('default', ['typescript', 'connect', 'watch']);
-gulp.task('build', ['copy', 'typescript', 'processhtml']);
+gulp.task('build', ['typescript', 'copy', 'compress', 'processhtml']);
+gulp.task('dist', ['build', 'deploy']);
