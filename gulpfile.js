@@ -89,7 +89,7 @@ gulp.task("open", function () {
 });
 
 gulp.task('minifyJs', ['typescript'], function () {
-  return gulp.src([paths.build + 'main.js'].concat(paths.libs))
+  return gulp.src(paths.libs.concat(paths.build + 'main.js'))
     .pipe(uglify('all.min.js', {outSourceMap: false}))
     .pipe(gulp.dest(paths.dist));
 });
