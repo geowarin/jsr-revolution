@@ -7,7 +7,9 @@ module JsrRevolution.State {
     create() {
       this.game.stage.backgroundColor = 0xFFFFFF;
 
-      // Assign global settings here
+      this.input.maxPointers = 1;
+      // disable pause when window is not focused
+      this.stage.disableVisibilityChange = true;
 
       this.game.state.start('preload');
     }

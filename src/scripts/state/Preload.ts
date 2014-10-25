@@ -7,8 +7,7 @@ module JsrRevolution.State {
       this.load.setPreloadSprite(this.preloadBar);
 
       this.load.image('john', 'assets/sprites/minimout.jpg');
-
-      // Load remaining assets here
+      this.load.atlasJSONHash('wolf', 'assets/sprites/wolf.png', 'assets/sprites/wolf.json');
     }
 
     create() {

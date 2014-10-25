@@ -1,7 +1,7 @@
 module JsrRevolution.State {
   export class Main extends Phaser.State {
-    private john;
-    private static speed:number = 10;
+    private john:JsrRevolution.Entities.John;
+    private wolf:Phaser.Sprite;
 
     create() {
       this.stage.backgroundColor = 0x000000;
@@ -9,21 +9,12 @@ module JsrRevolution.State {
       var x = this.game.width / 2,
         y = this.game.height / 2;
 
-      this.john = this.add.sprite(x, y, 'john');
+      this.john = new JsrRevolution.Entities.John(this.game, x, y);
+      this.wolf = new JsrRevolution.Entities.Wolf(this.game, 100, 100);
+
     }
 
     update() {
-      var keyboard:Phaser.Keyboard = this.input.keyboard;
-      if (keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        this.john.x -= Main.speed;
-      } else if (keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        this.john.x += Main.speed;
-      }
-      if (keyboard.isDown(Phaser.Keyboard.UP)) {
-        this.john.y -= Main.speed;
-      } else if (keyboard.isDown(Phaser.Keyboard.DOWN)) {
-        this.john.y += Main.speed;
-      }
     }
   }
 }
