@@ -1,13 +1,13 @@
 module JsrRevolution.Entities {
 
   export class John extends Phaser.Sprite {
-    private static speed:number = 10;
+    private static speed:number = 250;
     private bulletTime:number = 0;
     private bullets:Bullets;
 
     constructor(game:Phaser.Game, x:number, y:number) {
       super(game, x, y, 'john', 0);
-      this.anchor.setTo(0.5, 0);
+      this.anchor.setTo(0.5, 0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
       this.bullets = new Bullets(game);
 
@@ -17,16 +17,21 @@ module JsrRevolution.Entities {
 
     update() {
       var keyboard:Phaser.Keyboard = this.game.input.keyboard;
+      var vel:Phaser.Point = new Phaser.Point();
+
       if (keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        this.x -= John.speed;
+        this.scale.x = -1;
+        vel.x -= John.speed;
       } else if (keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        this.x += John.speed;
+        this.scale.x = 1;
+        vel.x += John.speed;
       }
       if (keyboard.isDown(Phaser.Keyboard.UP)) {
-        this.y -= John.speed;
+        vel.y -= John.speed;
       } else if (keyboard.isDown(Phaser.Keyboard.DOWN)) {
-        this.y += John.speed;
+        vel.y += John.speed;
       }
+      this.body.velocity = vel;
 
       this.screenWrap(this);
     }
@@ -34,11 +39,11 @@ module JsrRevolution.Entities {
     fire():void {
 
       if (this.game.time.now > this.bulletTime) {
-        var bullet:Phaser.Sprite = this.bullets.getFirstExists(false);
+        var bullet:Phaser.Sprite = this.bullets.getFirstDead();
 
         if (bullet) {
           bullet.reset(this.body.x + 16, this.body.y + 16);
-          this.game.physics.arcade.moveToPointer(bullet, 300);
+          this.game.physics.arcade.moveToPointer(bullet, 400);
           this.bulletTime = this.game.time.now + 100;
         }
       }
