@@ -9,6 +9,8 @@ module JsrRevolution.State {
       var x = this.game.width / 2,
         y = this.game.height / 2;
 
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
       this.john = new JsrRevolution.Entities.John(this.game, x, y);
       this.wolf = new JsrRevolution.Entities.Wolf(this.game, 100, 100);
 
