@@ -6,6 +6,7 @@ module JsrRevolution.Entities {
       super(game);
       this.enableBody = true;
       this.physicsBodyType = Phaser.Physics.ARCADE;
+      this.classType = JsrRevolution.Entities.Wolf;
     }
   }
 

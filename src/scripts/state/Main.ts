@@ -15,8 +15,21 @@ module JsrRevolution.State {
       this.enemies = new JsrRevolution.Entities.Enemies(this.game);
       this.bullets = new JsrRevolution.Entities.Bullets(this.game);
 
+      this.enemies.createMultiple(3, 'wolf');
+      this.enemies.getFirstDead().reset(200, 200, 2);
+
+
       this.john = new JsrRevolution.Entities.John(this.game, this.bullets, x, y);
-      var wolf = new JsrRevolution.Entities.Wolf(this.game, this.enemies, 200, 200);
+      //var wolf = new JsrRevolution.Entities.Wolf(this.game, this.enemies, 200, 200);
+
+      this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.spawnWolf, this);
+    }
+
+    spawnWolf() {
+      var newWolf = this.enemies.getFirstDead();
+      if (newWolf) {
+        newWolf.reset(this.game.world.randomX, this.game.world.randomY, 2);
+      }
     }
 
     update() {
