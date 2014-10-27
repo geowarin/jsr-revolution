@@ -5,6 +5,8 @@ module JsrRevolution.State {
     private bullets:JsrRevolution.Entities.Bullets;
     private score:JsrRevolution.UI.Score;
 
+    private objectLayer:Phaser.TilemapLayer;
+
     create() {
       this.stage.backgroundColor = 0x000000;
 
@@ -25,13 +27,18 @@ module JsrRevolution.State {
       this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.spawnWolf, this);
     }
 
+    //render() {
+    //  this.game.debug.body(this.john);
+    //  this.game.debug.bodyInfo(this.john, 200, 10);
+    //}
+
     private loadMap() {
       var map:Phaser.Tilemap = this.add.tilemap('snow-level');
       map.addTilesetImage('snow', 'snow-tiles');
 
       var background:Phaser.TilemapLayer = map.createLayer('background');
-      var objects:Phaser.TilemapLayer = map.createLayer('objects');
-      objects.debug = true;
+      this.objectLayer = map.createLayer('objects');
+      //this.objectLayer.debug = true;
 
       background.resizeWorld();
       map.setCollisionBetween(0, 200, true, 'objects');
@@ -47,6 +54,7 @@ module JsrRevolution.State {
 
     update() {
       this.game.physics.arcade.overlap(this.bullets, this.enemies, this.collisionHandler, null, this);
+      this.game.physics.arcade.collide(this.john, this.objectLayer);
     }
 
     collisionHandler(bullet:Phaser.Sprite, enemy:Phaser.Sprite) {

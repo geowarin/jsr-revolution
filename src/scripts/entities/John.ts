@@ -7,8 +7,9 @@ module JsrRevolution.Entities {
 
     constructor(game:Phaser.Game, bullets:Bullets, x:number, y:number) {
       super(game, x, y, 'john', 0);
-      this.anchor.setTo(0.5, 0.5);
+      this.anchor.set(0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
+      this.body.setSize(40, 60);
       this.bullets = bullets;
 
       game.add.existing(this);
