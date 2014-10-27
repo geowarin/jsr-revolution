@@ -8,11 +8,9 @@ module JsrRevolution.State {
     create() {
       this.stage.backgroundColor = 0x000000;
 
-      var x = this.game.width / 2,
-        y = this.game.height / 2;
-
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+      this.loadMap();
       this.enemies = new JsrRevolution.Entities.Enemies(this.game);
       this.bullets = new JsrRevolution.Entities.Bullets(this.game);
 
@@ -21,9 +19,22 @@ module JsrRevolution.State {
 
       this.score = new JsrRevolution.UI.Score(this.game);
 
-      this.john = new JsrRevolution.Entities.John(this.game, this.bullets, x, y);
+      this.john = new JsrRevolution.Entities.John(this.game, this.bullets, 100, 100);
+      this.camera.follow(this.john);
 
       this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.spawnWolf, this);
+    }
+
+    private loadMap() {
+      var map:Phaser.Tilemap = this.add.tilemap('snow-level');
+      map.addTilesetImage('snow', 'snow-tiles');
+
+      var background:Phaser.TilemapLayer = map.createLayer('background');
+      var objects:Phaser.TilemapLayer = map.createLayer('objects');
+      objects.debug = true;
+
+      background.resizeWorld();
+      map.setCollisionBetween(0, 200, true, 'objects');
     }
 
     spawnWolf() {

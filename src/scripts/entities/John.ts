@@ -52,14 +52,14 @@ module JsrRevolution.Entities {
     screenWrap(sprite:Phaser.Sprite) {
 
       if (sprite.x < 0) {
-        sprite.x = this.game.width;
-      } else if (sprite.x > this.game.width) {
+        sprite.x = this.game.world.width;
+      } else if (sprite.x > this.game.world.width) {
         sprite.x = 0;
       }
 
       if (sprite.y < 0) {
-        sprite.y = this.game.height;
-      } else if (sprite.y > this.game.height) {
+        sprite.y = this.game.world.height;
+      } else if (sprite.y > this.game.world.height) {
         sprite.y = 0;
       }
     }

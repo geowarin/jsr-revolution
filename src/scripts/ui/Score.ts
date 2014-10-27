@@ -8,6 +8,7 @@ module JsrRevolution.UI {
     constructor(game:Phaser.Game) {
       this.game = game;
       this.text = this.game.add.text(60, 10, this.getText(), {font: "20px Arial", fill: "#fff", align: "right"});
+      this.text.fixedToCamera = true;
     }
 
     addPoints(points:number) {
