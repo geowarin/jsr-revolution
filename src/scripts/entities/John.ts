@@ -5,11 +5,11 @@ module JsrRevolution.Entities {
     private bulletTime:number = 0;
     private bullets:Bullets;
 
-    constructor(game:Phaser.Game, x:number, y:number) {
+    constructor(game:Phaser.Game, bullets:Bullets, x:number, y:number) {
       super(game, x, y, 'john', 0);
       this.anchor.setTo(0.5, 0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
-      this.bullets = new Bullets(game);
+      this.bullets = bullets;
 
       game.add.existing(this);
       game.input.onDown.add(this.fire, this)
