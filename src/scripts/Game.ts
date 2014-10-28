@@ -1,10 +1,5 @@
 /// <reference path="phaser.d.ts"/>
 
-/// <reference path='state/Boot.ts'/>
-/// <reference path='state/Preload.ts'/>
-/// <reference path='state/Menu.ts'/>
-/// <reference path='state/Main.ts'/>
-
 module JsrRevolution {
   export class Game extends Phaser.Game {
     constructor() {

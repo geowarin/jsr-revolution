@@ -4,15 +4,15 @@ module JsrRevolution.State {
     private enemies:JsrRevolution.Entities.Enemies;
     private bullets:JsrRevolution.Entities.Bullets;
     private score:JsrRevolution.UI.Score;
-
-    private objectLayer:Phaser.TilemapLayer;
+    private map:JsrRevolution.map.Map;
 
     create() {
       this.stage.backgroundColor = 0x000000;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.loadMap();
+      this.map = new JsrRevolution.map.Map(this.game);
+      this.map.load();
       this.enemies = new JsrRevolution.Entities.Enemies(this.game);
       this.bullets = new JsrRevolution.Entities.Bullets(this.game);
 
@@ -32,18 +32,6 @@ module JsrRevolution.State {
     //  this.game.debug.bodyInfo(this.john, 200, 10);
     //}
 
-    private loadMap() {
-      var map:Phaser.Tilemap = this.add.tilemap('snow-level');
-      map.addTilesetImage('snow', 'snow-tiles');
-
-      var background:Phaser.TilemapLayer = map.createLayer('background');
-      this.objectLayer = map.createLayer('objects');
-      //this.objectLayer.debug = true;
-
-      background.resizeWorld();
-      map.setCollisionBetween(0, 200, true, 'objects');
-    }
-
     spawnWolf() {
       var newWolf:JsrRevolution.Entities.Wolf = this.enemies.getFirstDead();
       if (newWolf) {
@@ -54,7 +42,7 @@ module JsrRevolution.State {
 
     update() {
       this.game.physics.arcade.overlap(this.bullets, this.enemies, this.collisionHandler, null, this);
-      this.game.physics.arcade.collide(this.john, this.objectLayer);
+      this.map.updateCollisions(this.john);
     }
 
     collisionHandler(bullet:Phaser.Sprite, enemy:Phaser.Sprite) {

@@ -43,7 +43,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"..\/..\/..\/maps\/snow.png",
+         "image":"snow.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
