@@ -10,8 +10,8 @@ module JsrRevolution.State {
       this.load.image('bullet', 'assets/sprites/bullet.png');
       this.load.atlasJSONHash('wolf', 'assets/sprites/wolf.png', 'assets/sprites/wolf.json');
 
-      this.load.tilemap('snow-level', 'assets/maps/snow1.json', null, Phaser.Tilemap.TILED_JSON);
-      this.load.image('snow-tiles', 'assets/maps/snow.png');
+      this.load.tilemap('mountain-level', 'assets/maps/mountains1.json', null, Phaser.Tilemap.TILED_JSON);
+      this.load.image('mountain-tiles', 'assets/maps/mountain.png');
     }
 
     create() {

@@ -3,21 +3,31 @@ module JsrRevolution.map {
   export class Map {
     private game:Phaser.Game;
     private objectLayer:Phaser.TilemapLayer;
+    private map:Phaser.Tilemap;
 
     constructor(game:Phaser.Game) {
       this.game = game;
     }
 
     public load() {
-      var map:Phaser.Tilemap = this.game.add.tilemap('snow-level');
-      map.addTilesetImage('snow', 'snow-tiles');
+      this.map = this.game.add.tilemap('mountain-level');
+      this.map.addTilesetImage('mountain', 'mountain-tiles');
 
-      var background:Phaser.TilemapLayer = map.createLayer('background');
-      this.objectLayer = map.createLayer('objects');
+      this.map.layers.forEach((layer:Phaser.TilemapLayer, index:number) => {
+        if (layer.name == 'background') {
+          this.map.createLayer(index);
+        }
+      });
+
+      this.objectLayer = this.map.createLayer('obstacles');
       //this.objectLayer.debug = true;
 
-      background.resizeWorld();
-      map.setCollisionBetween(0, 200, true, 'objects');
+      this.objectLayer.resizeWorld();
+      this.map.setCollisionByExclusion([], true, 'obstacles');
+    }
+
+    public createLayer(name:string):Phaser.TilemapLayer {
+      return this.map.createLayer(name);
     }
 
     public updateCollisions(sprite:Phaser.Sprite) {

@@ -13,6 +13,7 @@ module JsrRevolution.State {
 
       this.map = new JsrRevolution.map.Map(this.game);
       this.map.load();
+
       this.enemies = new JsrRevolution.Entities.Enemies(this.game);
       this.bullets = new JsrRevolution.Entities.Bullets(this.game);
 
@@ -23,6 +24,8 @@ module JsrRevolution.State {
 
       this.john = new JsrRevolution.Entities.John(this.game, this.bullets, 100, 100);
       this.camera.follow(this.john);
+
+      this.map.createLayer('foreground');
 
       this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.spawnWolf, this);
     }
