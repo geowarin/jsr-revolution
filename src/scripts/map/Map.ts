@@ -2,8 +2,8 @@ module JsrRevolution.map {
 
   export class Map {
     private game:Phaser.Game;
-    private objectLayer:Phaser.TilemapLayer;
     private map:Phaser.Tilemap;
+    private obstacles:Phaser.TilemapLayer[] = [];
 
     constructor(game:Phaser.Game) {
       this.game = game;
@@ -13,25 +13,35 @@ module JsrRevolution.map {
       this.map = this.game.add.tilemap('mountain-level');
       this.map.addTilesetImage('mountain', 'mountain-tiles');
 
-      this.map.layers.forEach((layer:Phaser.TilemapLayer, index:number) => {
-        if (layer.name == 'background') {
-          this.map.createLayer(index);
-        }
+      this.map.layers.forEach((layer:Phaser.TilemapLayer) => {
+
+        if (this.nameStartsWith(layer, 'background'))
+          this.map.createLayer(layer.name).resizeWorld();
+
+        else if (this.nameStartsWith(layer, 'obstacles'))
+          this.createObstacleLayer(layer.name);
+
       });
-
-      this.objectLayer = this.map.createLayer('obstacles');
-      //this.objectLayer.debug = true;
-
-      this.objectLayer.resizeWorld();
-      this.map.setCollisionByExclusion([], true, 'obstacles');
     }
 
-    public createLayer(name:string):Phaser.TilemapLayer {
-      return this.map.createLayer(name);
+    private nameStartsWith(layer, name:string) {
+      return layer.name.search(new RegExp('^' + name)) === 0;
+    }
+
+    public addForeground():void {
+      this.map.layers.forEach((layer:Phaser.TilemapLayer) => {
+        if (this.nameStartsWith(layer, 'foreground'))
+          this.map.createLayer(layer.name);
+      })
     }
 
     public updateCollisions(sprite:Phaser.Sprite) {
-      this.game.physics.arcade.collide(sprite, this.objectLayer);
+      this.game.physics.arcade.collide(sprite, this.obstacles);
+    }
+
+    createObstacleLayer(layerName:String):void {
+      this.obstacles.push(this.map.createLayer(layerName));
+      this.map.setCollisionByExclusion([], true, layerName);
     }
   }
 }

@@ -25,7 +25,7 @@ module JsrRevolution.State {
       this.john = new JsrRevolution.Entities.John(this.game, this.bullets, 100, 100);
       this.camera.follow(this.john);
 
-      this.map.createLayer('foreground');
+      this.map.addForeground();
 
       this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.spawnWolf, this);
     }
