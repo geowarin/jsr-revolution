@@ -8,6 +8,7 @@ module JsrRevolution.State {
       var backColor:Phaser.Graphics = this.add.graphics(0, 0);
       backColor.beginFill(0x000);
       backColor.drawRect(0,0, this.game.width, this.game.height);
+      this.game.sound.mute = window.location.hash !== '#sound';
 
       var background = this.add.sprite(0, 0, 'menu-background');
       this.writerSound = this.add.audio('gun');
