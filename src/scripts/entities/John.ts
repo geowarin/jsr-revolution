@@ -13,6 +13,7 @@ module JsrRevolution.Entities {
       this.bullets = bullets;
 
       game.add.existing(this);
+      this.game.camera.follow(this);
       game.input.onDown.add(this.fire, this)
     }
 
