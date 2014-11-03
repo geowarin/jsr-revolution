@@ -18,9 +18,9 @@
     "gulp-minify-html": "*",
     "gulp-open": "^0.3.0",
     "gulp-processhtml": "*",
-    "gulp-sourcemaps": "^1.2.4",
-    "gulp-typescript": "^2.1.0",
-    "gulp-uglifyjs": "^0.4.4",
+    "gulp-sourcemaps": "*",
+    "gulp-typescript": "*",
+    "gulp-uglifyjs": "*",
     "gulp-util": "*",
     "gulp-watch": "*",
     "run-sequence": "^1.0.1"
