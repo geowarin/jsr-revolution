@@ -4,17 +4,26 @@ module JsrRevolution.Entities {
     private static speed:number = 250;
     private bulletTime:number = 0;
     private bullets:Bullets;
+    onHurt:Phaser.Signal;
 
     constructor(game:Phaser.Game, bullets:Bullets, x:number, y:number) {
-      super(game, x, y, 'john', 0);
+      super(game, x, y, 'john');
       this.anchor.set(0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
       this.body.setSize(40, 60);
       this.bullets = bullets;
+      this.health = 100;
+      this.onHurt = new Phaser.Signal();
 
       game.add.existing(this);
       this.game.camera.follow(this);
-      game.input.onDown.add(this.fire, this)
+      game.input.onDown.add(this.fire, this);
+    }
+
+    damage(amount:number) {
+      super.damage(amount);
+      this.onHurt.dispatch(this.health);
+      return this;
     }
 
     update() {
@@ -40,15 +49,19 @@ module JsrRevolution.Entities {
 
     fire():void {
 
-      if (this.game.time.now > this.bulletTime) {
-        var bullet:Phaser.Sprite = this.bullets.getFirstDead();
+      if (!this.alive || !this.canFire())
+        return;
 
-        if (bullet) {
-          bullet.reset(this.body.x + 16, this.body.y + 16);
-          this.game.physics.arcade.moveToPointer(bullet, 400);
-          this.bulletTime = this.game.time.now + 100;
-        }
+      var bullet:Phaser.Sprite = this.bullets.getFirstDead();
+      if (bullet) {
+        bullet.reset(this.body.x + 16, this.body.y + 16);
+        this.game.physics.arcade.moveToPointer(bullet, 400);
+        this.bulletTime = this.game.time.now + 200;
       }
+    }
+
+    private canFire() {
+      return this.game.time.now > this.bulletTime;
     }
 
     screenWrap(sprite:Phaser.Sprite) {

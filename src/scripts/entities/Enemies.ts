@@ -17,6 +17,7 @@ module JsrRevolution.Entities {
       if (newWolf) {
         newWolf.reset(this.game.world.randomX, this.game.world.randomY, 2);
         newWolf.target = this.main.john;
+        Wolf.currentSpeed += 2;
         newWolf.events.onKilled.addOnce(() => this.main.score.addPoints(10));
       }
     }

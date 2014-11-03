@@ -20,12 +20,14 @@ module JsrRevolution.State {
 
       this.map.addForeground();
       this._score = new JsrRevolution.UI.Score(this.game);
+      new JsrRevolution.UI.Health(this.game, this._john);
 
       this.game.time.events.loop(3 * Phaser.Timer.SECOND, this.enemies.spawnWolf, this.enemies);
     }
 
     update() {
       this.game.physics.arcade.overlap(this.bullets, this.enemies, this.collisionHandler, null, this);
+      this.game.physics.arcade.overlap(this.john, this.enemies, () => this.john.damage(2), null, this);
       this.map.updateCollisions(this._john);
     }
 
