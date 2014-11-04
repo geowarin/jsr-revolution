@@ -11,6 +11,10 @@ module JsrRevolution.UI {
       this.text.fixedToCamera = true;
     }
 
+    get points():number {
+      return this.score;
+    }
+
     addPoints(points:number) {
       this.score += points;
       this.text.text = this.getText();
