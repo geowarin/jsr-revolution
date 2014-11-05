@@ -11,6 +11,7 @@ module JsrRevolution.Entities {
       this.anchor.set(0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
       this.body.setSize(40, 60);
+      this.body.collideWorldBounds = true;
       this.bullets = bullets;
       this.health = 100;
       this.onHurt = new Phaser.Signal();
@@ -43,8 +44,6 @@ module JsrRevolution.Entities {
         vel.y += John.speed;
       }
       this.body.velocity = vel;
-
-      this.screenWrap(this);
     }
 
     fire():void {
@@ -63,21 +62,5 @@ module JsrRevolution.Entities {
     private canFire() {
       return this.game.time.now > this.bulletTime;
     }
-
-    screenWrap(sprite:Phaser.Sprite) {
-
-      if (sprite.x < 0) {
-        sprite.x = this.game.world.width;
-      } else if (sprite.x > this.game.world.width) {
-        sprite.x = 0;
-      }
-
-      if (sprite.y < 0) {
-        sprite.y = this.game.world.height;
-      } else if (sprite.y > this.game.world.height) {
-        sprite.y = 0;
-      }
-    }
-
   }
 }

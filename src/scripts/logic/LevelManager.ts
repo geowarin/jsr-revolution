@@ -43,7 +43,7 @@ module JsrRevolution.logic {
     }
 
     onEnemyKilled() {
-      this.main.score.addPoints(10);
+      this.main.score.addPoints(this.level.pointsPerEnemy);
       if (this.nextLevelPending && this.enemies.total == 0) {
         this.startLevel();
       }
