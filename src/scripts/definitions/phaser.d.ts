@@ -4499,7 +4499,7 @@ declare module Phaser {
 
     class RandomDataGenerator {
 
-	constructor(seeds: number[]);
+	constructor(seeds?: number[]);
 
 	angle(): number;
 	between(min: number, max: number): number;

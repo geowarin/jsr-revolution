@@ -2,7 +2,7 @@ module JsrRevolution.Entities {
 
   export class Wolf extends Phaser.Sprite {
     target:Phaser.Sprite;
-    static currentSpeed:number = 100;
+    speed:number = 100;
 
     constructor(game:Phaser.Game) {
       super(game, 0, 0, 'wolf');
@@ -15,7 +15,7 @@ module JsrRevolution.Entities {
 
     update() {
       if (this.target)
-        this.game.physics.arcade.moveToObject(this, this.target, Wolf.currentSpeed);
+        this.game.physics.arcade.moveToObject(this, this.target, this.speed);
 
       if (this.body.velocity.x > 0)
         this.scale.x = -1;
