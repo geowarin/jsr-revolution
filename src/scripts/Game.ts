@@ -1,4 +1,5 @@
-/// <reference path="phaser.d.ts"/>
+/// <reference path="definitions/phaser.d.ts"/>
+/// <reference path="definitions/lodash.d.ts"/>
 
 module JsrRevolution {
   export class Game extends Phaser.Game {
@@ -9,6 +10,7 @@ module JsrRevolution {
       this.state.add('preload', State.Preload);
       this.state.add('menu', State.Menu);
       this.state.add('main', State.Main);
+      this.state.add('highScores', State.HighScores);
 
       this.state.start('boot');
     }

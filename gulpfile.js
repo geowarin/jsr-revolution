@@ -18,7 +18,8 @@ var paths = {
   less: 'src/css/main.less',
   index: 'src/index.html',
   libs: [
-    'src/vendor/phaser-official/build/phaser.min.js'
+    'src/vendor/phaser-official/build/phaser.min.js',
+    'src/vendor/lodash/dist/lodash.js'
   ],
   ts: 'src/scripts/**/*.ts',
   build: './build/',

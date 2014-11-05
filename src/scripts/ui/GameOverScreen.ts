@@ -2,29 +2,23 @@ module JsrRevolution.UI {
 
   export class GameOverScreen extends Phaser.Group {
     private nameInput:Phaser.Text;
-    private main:JsrRevolution.State.Main;
+    private main:State.Main;
 
-    constructor(game:Phaser.Game, main:JsrRevolution.State.Main) {
-      super(game);
+    constructor(main:State.Main) {
+      super(main.game);
       this.main = main;
-      this.gameOver();
     }
 
-    gameOver() {
-      var gameOver:Phaser.Text = this.game.add.text(this.game.width / 2, this.game.height / 2, 'GAME OVER', {font: "65px Arial", fill: "#fff", align: 'center'});
-      gameOver.fixedToCamera = true;
-      gameOver.anchor.set(0.5, 0.5);
+    show() {
+      var textManager = new TextManager(this.game);
+      textManager.addText('GAME OVER', 65);
+      textManager.addText('Enter your name');
+      this.nameInput = textManager.addText('');
 
-      var instructions:Phaser.Text = this.game.add.text(200, 280, 'Enter your name', {font: "40px Arial", fill: "#fff"});
-      instructions.fixedToCamera = true;
-
-      this.nameInput = this.game.add.text(100, 330, '', {font: "40px Arial", fill: "#fff"});
-      this.nameInput.fixedToCamera = true;
-
-      this.game.input.keyboard.addCallbacks(this, this.onGameOverKey);
+      this.game.input.keyboard.addCallbacks(this, this.onKeyDown);
     }
 
-    onGameOverKey(e:KeyboardEvent) {
+    onKeyDown(e:KeyboardEvent) {
       var text = this.nameInput.text;
       if (e.which >= Phaser.Keyboard.A && e.which <= Phaser.Keyboard.Z)
         this.nameInput.setText(text + String.fromCharCode(e.which));
@@ -37,10 +31,7 @@ module JsrRevolution.UI {
     }
 
     registerScore(score:number, name:string) {
-      this.game.input.keyboard.stop();
-      console.log(score, name);
+      this.game.state.start('highScores', true, false, name, score);
     }
-
   }
-
 }

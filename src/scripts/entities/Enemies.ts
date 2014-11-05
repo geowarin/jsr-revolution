@@ -3,8 +3,8 @@ module JsrRevolution.Entities {
   export class Enemies extends Phaser.Group {
     private main:JsrRevolution.State.Main;
 
-    constructor(game:Phaser.Game, main:JsrRevolution.State.Main) {
-      super(game);
+    constructor(main:JsrRevolution.State.Main) {
+      super(main.game);
       this.main = main;
       this.enableBody = true;
       this.physicsBodyType = Phaser.Physics.ARCADE;
