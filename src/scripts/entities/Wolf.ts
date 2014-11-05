@@ -6,7 +6,6 @@ module JsrRevolution.Entities {
 
     constructor(game:Phaser.Game) {
       super(game, 0, 0, 'wolf');
-      this.health = 2;
 
       this.anchor.setTo(0.5);
       this.animations.add('run');
