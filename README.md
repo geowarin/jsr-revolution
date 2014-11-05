@@ -12,3 +12,21 @@ This game is made with :
 * Typescript
 * Gulp
 * Love
+
+## Developping
+
+Download the dependencies :
+
+    npm install && bower install
+  
+Run & debug (live reload and source maps)  
+
+    gulp
+  
+Build (minified js and less) :
+
+    gulp build
+
+Deploy on gh-pages. First build it then
+
+    gulp deploy
