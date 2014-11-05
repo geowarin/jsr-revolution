@@ -4,7 +4,7 @@ module JsrRevolution.Entities {
     target:Phaser.Sprite;
     static currentSpeed:number = 100;
 
-      constructor(game:Phaser.Game) {
+    constructor(game:Phaser.Game) {
       super(game, 0, 0, 'wolf');
       this.health = 2;
 
@@ -21,7 +21,6 @@ module JsrRevolution.Entities {
         this.scale.x = -1;
       else
         this.scale.x = 1;
-
     }
   }
 }

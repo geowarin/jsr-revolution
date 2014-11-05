@@ -1,4 +1,3 @@
-
 module JsrRevolution.UI {
 
   export class TextManager {

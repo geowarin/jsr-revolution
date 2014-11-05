@@ -18,7 +18,7 @@ module JsrRevolution.State {
       var textManager = new UI.TextManager(this.game, 50);
       textManager.addText('HIGH SCORES', 60);
       this.highScores.forEach((highScore:HighScore) => {
-	textManager.addText(highScore.score + ' ' + highScore.name);
+        textManager.addText(highScore.score + ' ' + highScore.name);
       });
     }
   }

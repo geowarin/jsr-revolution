@@ -17,8 +17,8 @@ module JsrRevolution.State {
 
       this._john = new Entities.John(this.game, this.bullets, 100, 100);
       this._john.events.onKilled.add(() => {
-	var gameOverScreen = new UI.GameOverScreen(this);
-	gameOverScreen.show();
+        var gameOverScreen = new UI.GameOverScreen(this);
+        gameOverScreen.show();
       }, this);
       this.enemies.spawnWolf();
 
