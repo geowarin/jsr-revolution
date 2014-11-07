@@ -16,7 +16,3 @@ module JsrRevolution {
     }
   }
 }
-
-window.onload = () => {
-  var game = new JsrRevolution.Game();
-};

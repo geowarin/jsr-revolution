@@ -11,7 +11,8 @@ var gulp = require('gulp'),
   del = require('del'),
   uglify = require('gulp-uglifyjs'),
   deploy = require('gulp-gh-pages'),
-  runSequence = require('run-sequence');
+  runSequence = require('run-sequence'),
+  mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 var paths = {
   assets: 'src/assets/**/*',
@@ -106,9 +107,17 @@ gulp.task('deploy', function () {
     .pipe(deploy());
 });
 
+gulp.task('mocha', function () {
+    return gulp.src('test/test.html', {read: false})
+        .pipe(mochaPhantomJS());
+});
+
 gulp.task('default', function() {
   runSequence('clean', ['typescript', 'less', 'connect', 'watch'], 'open');
 });
 gulp.task('build', function() {
   return runSequence('clean', ['typescript', 'less', 'copy', 'minifyJs', 'minifyCss', 'processhtml']);
+});
+gulp.task('test', function() {
+  return runSequence('clean', ['typescript', 'mocha']);
 });
