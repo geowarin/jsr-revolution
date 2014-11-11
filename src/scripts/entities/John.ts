@@ -4,10 +4,14 @@ module JsrRevolution.Entities {
     private static speed:number = 250;
     private bulletTime:number = 0;
     private bullets:Bullets;
+    private hands:Phaser.Sprite;
     onHurt:Phaser.Signal;
 
     constructor(game:Phaser.Game, bullets:Bullets, x:number, y:number) {
       super(game, x, y, 'john');
+      this.hands = this.game.add.sprite(0, 0, 'johnHands');
+      this.hands.anchor.set(0.5);
+      this.addChild(this.hands);
       this.anchor.set(0.5);
       game.physics.enable(this, Phaser.Physics.ARCADE);
       this.body.setSize(40, 60);
@@ -28,6 +32,7 @@ module JsrRevolution.Entities {
     }
 
     update() {
+      super.update();
       var keyboard:Phaser.Keyboard = this.game.input.keyboard;
       var vel:Phaser.Point = new Phaser.Point();
 
@@ -44,6 +49,14 @@ module JsrRevolution.Entities {
         vel.y += John.speed;
       }
       this.body.velocity = vel;
+      this.hands.rotation = this.angleToPointer(this) * this.scale.x;
+    }
+
+    angleToPointer(displayObject) {
+      var pointer = this.game.input.activePointer;
+      var dx = (pointer.worldX - displayObject.x) * this.scale.x;
+      var dy = (pointer.worldY - displayObject.y) * this.scale.x;
+      return Math.atan2(dy, dx);
     }
 
     fire():void {

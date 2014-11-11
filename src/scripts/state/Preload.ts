@@ -16,6 +16,7 @@ module JsrRevolution.State {
       this.load.audio('gun', 'assets/sounds/gun.wav');
 
       this.load.image('john', 'assets/sprites/john.png');
+      this.load.image('johnHands', 'assets/sprites/johnHands.png');
       this.load.image('bullet', 'assets/sprites/bullet.png');
       this.load.atlasJSONHash('wolf', 'assets/sprites/wolf.png', 'assets/sprites/wolf.json');
 
