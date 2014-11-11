@@ -6,7 +6,9 @@ module JsrRevolution.State {
       this.preloadBar = this.add.sprite(290, 290, 'preload-bar');
       this.load.setPreloadSprite(this.preloadBar);
 
-      this.load.atlasJSONHash('panel', 'assets/icons/panel.png', 'assets/icons/panel.json');
+      this.load.atlasJSONHash('gui', 'assets/gui/space-sprites.png', 'assets/gui/space-sprites.json');
+      this.load.bitmapFont('future-thin', 'assets/fonts/future-thin.png', 'assets/fonts/future-thin.xml');
+
       this.load.image('health', 'assets/icons/health.png');
       this.load.image('health-increase', 'assets/icons/health-increase.png');
       this.load.image('piston', 'assets/icons/pistol.png');

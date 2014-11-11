@@ -2706,7 +2706,7 @@ declare module Phaser {
 
     class Image extends PIXI.Sprite {
 
-	constructor(game: Phaser.Game, x: number, y: number, key: any, frame: any);
+	constructor(game: Phaser.Game, x: number, y: number, key?: any, frame?: any);
 
 	alive: boolean;
 	angle: number;

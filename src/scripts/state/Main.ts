@@ -3,15 +3,15 @@ module JsrRevolution.State {
     private _john:Entities.John;
     private _enemies:Entities.Enemies;
     private _bullets:Entities.Bullets;
-    private _score:UI.Score;
-    private map:map.Map;
-    private levelManager:logic.LevelManager;
+    private _map:map.Map;
+    private _levelManager:logic.LevelManager;
+    private _topPanel:UI.TopPanel;
 
     create() {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.map = new map.Map(this.game);
-      this.map.load();
+      this._map = new map.Map(this.game);
+      this._map.load();
 
       this._enemies = new Entities.Enemies(this);
       this._bullets = new Entities.Bullets(this);
@@ -22,20 +22,17 @@ module JsrRevolution.State {
         gameOverScreen.show();
       }, this);
 
-      this.levelManager = new logic.LevelManager(this, this.enemies);
-      this.levelManager.start();
+      this._levelManager = new logic.LevelManager(this);
+      this._levelManager.start();
 
-      this.map.addForeground();
-      this._score = new UI.Score(this.game);
-      new UI.Health(this.game, this._john);
+      this._map.addForeground();
+
+      this._topPanel = new UI.TopPanel(this);
+      this.add.existing(this._topPanel);
     }
 
     update() {
-      this.map.updateCollisions(this._john);
-    }
-
-    get score():UI.Score {
-      return this._score;
+      this._map.updateCollisions(this._john);
     }
 
     get john():Entities.John {
@@ -44,6 +41,14 @@ module JsrRevolution.State {
 
     get enemies():Entities.Enemies {
       return this._enemies;
+    }
+
+    get topPanel() {
+      return this._topPanel;
+    }
+
+    get score() {
+      return this._topPanel.score;
     }
   }
 }

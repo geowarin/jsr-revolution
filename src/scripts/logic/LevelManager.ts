@@ -43,7 +43,7 @@ module JsrRevolution.logic {
     }
 
     onEnemyKilled() {
-      this.main.score.addPoints(this.level.pointsPerEnemy);
+      this.main.topPanel.addPoints(this.level.pointsPerEnemy);
       if (this.nextLevelPending && this.enemies.total == 0) {
         this.startLevel();
       }
@@ -59,9 +59,9 @@ module JsrRevolution.logic {
       }
     }
 
-    constructor(main:State.Main, enemies:Entities.Enemies) {
+    constructor(main:State.Main) {
       this.main = main;
-      this.enemies = enemies;
+      this.enemies = main.enemies;
       var world:Phaser.World = main.game.world;
       this.spawnLocations = [
         new Phaser.Point(0, 0),

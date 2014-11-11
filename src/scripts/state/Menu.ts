@@ -15,9 +15,6 @@ module JsrRevolution.State {
       this.font = this.game.add.retroFont('knightHawks', 31, 25, Phaser.RetroFont.TEXT_SET2, 10, 1, 0);
 
       this.writeText(60, 150, "REVOLUTION");
-
-      var panel = new UI.Panel(this.game, 400, 300);
-      this.game.add.existing(panel);
     }
 
     private writeText(x:number, y:number, textToWrite) {

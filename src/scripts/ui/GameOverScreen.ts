@@ -27,7 +27,7 @@ module JsrRevolution.UI {
         this.nameInput.setText(text.substr(0, text.length - 1));
 
       else if (e.which == Phaser.Keyboard.ENTER)
-        this.registerScore(this.main.score.points, text);
+        this.registerScore(this.main.score, text);
     }
 
     registerScore(score:number, name:string) {
