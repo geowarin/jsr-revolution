@@ -8,6 +8,7 @@ module JsrRevolution.logic {
     private spawnLocations:Phaser.Point[];
     private random:Phaser.RandomDataGenerator = new Phaser.RandomDataGenerator();
     private nextLevelPending:boolean;
+    private bonusSelectionScreen:UI.BonusSelectionScreen;
 
     start() {
       this.level = new Level(1, 3 * Phaser.Timer.SECOND, 100, 2, 1, 10);
@@ -21,7 +22,8 @@ module JsrRevolution.logic {
       console.log('Starting level', this.level);
       this.enemies.createMultiple(1, "wolf");
       this.level.enemySpeed += 10;
-      var numberOfWaves:number = this.level.level + 2;
+      //var numberOfWaves:number = this.level.level + 2;
+      var numberOfWaves:number = 1;
       this.timer.repeat(this.level.respawnDelay, numberOfWaves, this.spawnEnemies, this);
       this.timer.start();
     }
@@ -37,6 +39,13 @@ module JsrRevolution.logic {
                              previousLevel.pointsPerEnemy + 5);
     }
 
+    showBonusScreen() {
+      this.bonusSelectionScreen = new UI.BonusSelectionScreen(this.main);
+      this.main.add.existing(this.bonusSelectionScreen);
+      this.bonusSelectionScreen.events.onKilled.addOnce(() => this.startLevel());
+      this.bonusSelectionScreen.show(this.level.level - 1);
+    }
+
     spawnEnemies() {
       var location:Phaser.Point = this.random.pick(this.spawnLocations);
       this.spawnWolf(location);
@@ -45,7 +54,7 @@ module JsrRevolution.logic {
     onEnemyKilled() {
       this.main.topPanel.addPoints(this.level.pointsPerEnemy);
       if (this.nextLevelPending && this.enemies.total == 0) {
-        this.startLevel();
+        this.showBonusScreen();
       }
     }
 
@@ -78,7 +87,7 @@ module JsrRevolution.logic {
     enemySpeed:number;
     enemyHealth:number;
     enemyDamage:number;
-    pointsPerEnemy: number;
+    pointsPerEnemy:number;
 
     constructor(level:number, respawnDelay:number, enemySpeed:number, enemyHealth:number, enemyDamage:number, pointsPerEnemy:number) {
       this.level = level;

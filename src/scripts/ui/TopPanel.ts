@@ -6,8 +6,7 @@ module JsrRevolution.UI {
     private _points:number = 0;
 
     constructor(main:State.Main) {
-      var rect = new Phaser.Rectangle(0, 0, 770, 15);
-      super(main.game, rect);
+      super(main.game, new Phaser.Rectangle(0, 0, 770, 15));
 
       this._healthBar = new PhaserUI.HorizontalBar(main.game, 40, 10, 200, PhaserUI.RED_BAR);
       this._score = this.game.add.bitmapText(600, 15, 'future-thin', 'Score : ', 24);

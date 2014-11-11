@@ -11,7 +11,7 @@ module JsrRevolution.State {
 
       this.load.image('health', 'assets/icons/health.png');
       this.load.image('health-increase', 'assets/icons/health-increase.png');
-      this.load.image('piston', 'assets/icons/pistol.png');
+      this.load.image('pistol', 'assets/icons/pistol.png');
 
       this.load.image('menu-background', 'assets/images/jsr-title.png');
       this.load.image('knightHawks', 'assets/fonts/knighthawks.png');
