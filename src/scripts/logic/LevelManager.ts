@@ -22,8 +22,7 @@ module JsrRevolution.logic {
       console.log('Starting level', this.level);
       this.enemies.createMultiple(1, "wolf");
       this.level.enemySpeed += 10;
-      //var numberOfWaves:number = this.level.level + 2;
-      var numberOfWaves:number = 1;
+      var numberOfWaves:number = this.level.level + 2;
       this.timer.repeat(this.level.respawnDelay, numberOfWaves, this.spawnEnemies, this);
       this.timer.start();
     }
@@ -40,6 +39,7 @@ module JsrRevolution.logic {
     }
 
     showBonusScreen() {
+      this.main.john.paused = true;
       this.bonusSelectionScreen = new UI.BonusSelectionScreen(this.main);
       this.main.add.existing(this.bonusSelectionScreen);
       this.bonusSelectionScreen.events.onKilled.addOnce(() => this.startLevel());

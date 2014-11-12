@@ -18,15 +18,31 @@ module JsrRevolution.UI {
       var energyPanel = new ClickablePanel(this.game, new Phaser.Rectangle(0, 80, 150, 200), PhaserUI.BLUE_PANEL, 'health-increase', 'Permanently\nincrease your\nmaximum health\nby 10');
       energyPanel.setTitle('energy');
       this.addChild(energyPanel);
-      energyPanel.events.onInputDown.add(() => this.kill());
+      energyPanel.events.onInputDown.add(() => {
+        this._main.john.characteristics.maximumHealth += 20;
+        this._main.john.health += 20;
+        this._main.john.dispatchHealthChange();
+        this._main.john.paused = false;
+        this.kill();
+      });
 
       var attackPanel = new ClickablePanel(this.game, new Phaser.Rectangle(200, 80, 150, 200), PhaserUI.RED_PANEL, 'pistol', 'Boost you power');
       attackPanel.setTitle('attack');
       this.addChild(attackPanel);
+      attackPanel.events.onInputDown.add(() => {
+        this._main.john.characteristics.bulletDamage += 0.2;
+        this._main.john.paused = false;
+        this.kill();
+      });
 
       var healthPanel = new ClickablePanel(this.game, new Phaser.Rectangle(400, 80, 150, 200), PhaserUI.GREEN_PANEL, 'health', 'Get me a medic !');
       healthPanel.setTitle('health');
       this.addChild(healthPanel);
+      healthPanel.events.onInputDown.add(() => {
+        this._main.john.heal();
+        this._main.john.paused = false;
+        this.kill();
+      });
     }
 
     show(level:number) {
@@ -40,7 +56,6 @@ module JsrRevolution.UI {
       super(game, rect, color);
       this.inputEnabled = true;
       this.input.useHandCursor = true;
-      this.events.onInputDown.add(() => console.log('clock'));
 
       var iconImg = this.game.add.image(60, 40, icon);
       this.addChild(iconImg);

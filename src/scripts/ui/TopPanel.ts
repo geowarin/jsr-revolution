@@ -14,14 +14,14 @@ module JsrRevolution.UI {
       this.addChild(this._healthBar);
       this.addChild(this._score);
 
-      this.updateHealth(main.john.health);
-      main.john.onHurt.add(this.updateHealth, this);
+      this.updateHealth(main.john.health, main.john.characteristics.maximumHealth);
+      main.john.onHealthChange.add(this.updateHealth, this);
       this.fixedToCamera = true;
     }
 
-    updateHealth(remainingHeath:number) {
-      this._healthBar.setValue(remainingHeath, 100);
-      this._healthBar.label = remainingHeath.toString() + ' / 100';
+    updateHealth(remainingHeath:number, maximumHealth:number) {
+      this._healthBar.setValue(remainingHeath, maximumHealth);
+      this._healthBar.label = remainingHeath.toString() + ' / ' + maximumHealth;
     }
 
     addPoints(points:number) {

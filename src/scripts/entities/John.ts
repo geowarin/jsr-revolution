@@ -5,10 +5,13 @@ module JsrRevolution.Entities {
     private bulletTime:number = 0;
     private bullets:Bullets;
     private hands:Phaser.Sprite;
-    onHurt:Phaser.Signal;
+    onHealthChange:Phaser.Signal;
+    characteristics:Characteristics;
+    paused:boolean = false;
 
     constructor(game:Phaser.Game, bullets:Bullets, x:number, y:number) {
       super(game, x, y, 'john');
+      this.characteristics = new JsrRevolution.Characteristics();
       this.hands = this.game.add.sprite(0, 0, 'johnHands');
       this.hands.anchor.set(0.5);
       this.addChild(this.hands);
@@ -18,7 +21,7 @@ module JsrRevolution.Entities {
       this.body.collideWorldBounds = true;
       this.bullets = bullets;
       this.health = 100;
-      this.onHurt = new Phaser.Signal();
+      this.onHealthChange = new Phaser.Signal();
 
       game.add.existing(this);
       this.game.camera.follow(this);
@@ -27,11 +30,25 @@ module JsrRevolution.Entities {
 
     damage(amount:number) {
       super.damage(amount);
-      this.onHurt.dispatch(this.health);
+      this.dispatchHealthChange();
       return this;
     }
 
+    dispatchHealthChange() {
+      this.onHealthChange.dispatch(this.health, this.characteristics.maximumHealth);
+    }
+
+    heal() {
+      this.health = this.characteristics.maximumHealth;
+      this.dispatchHealthChange();
+    }
+
     update() {
+      if (this.paused) {
+        this.body.velocity = new Phaser.Point();
+        return;
+      }
+
       super.update();
       var keyboard:Phaser.Keyboard = this.game.input.keyboard;
       var vel:Phaser.Point = new Phaser.Point();
@@ -61,12 +78,13 @@ module JsrRevolution.Entities {
 
     fire():void {
 
-      if (!this.alive || !this.canFire())
+      if (!this.alive || !this.canFire() || this.paused)
         return;
 
-      var bullet:Phaser.Sprite = this.bullets.getFirstDead();
+      var bullet:Bullet = this.bullets.getFirstDead();
       if (bullet) {
         bullet.reset(this.body.x + 16, this.body.y + 16);
+        bullet.power = this.characteristics.bulletDamage;
         this.game.physics.arcade.moveToPointer(bullet, 400);
         this.bulletTime = this.game.time.now + 200;
       }

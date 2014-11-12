@@ -8,6 +8,7 @@ module JsrRevolution.Entities {
       this.main = main;
       this.enableBody = true;
       this.physicsBodyType = Phaser.Physics.ARCADE;
+      this.classType = Bullet;
 
       this.createMultiple(10, 'bullet');
       this.setAll('anchor.x', 0.5);
@@ -20,9 +21,13 @@ module JsrRevolution.Entities {
       this.game.physics.arcade.overlap(this, this.main.enemies, this.collisionHandler, null, this);
     }
 
-    collisionHandler(bullet:Phaser.Sprite, enemy:Phaser.Sprite) {
+    collisionHandler(bullet:Bullet, enemy:Phaser.Sprite) {
       bullet.kill();
-      enemy.damage(1);
+      enemy.damage(bullet.power);
     }
+  }
+
+  export class Bullet extends Phaser.Sprite {
+    power:number = 1.0;
   }
 }
