@@ -20,6 +20,7 @@ module JsrRevolution.logic {
 
     startLevel() {
       console.log('Starting level', this.level);
+      this.nextLevelPending = false;
       this.enemies.createMultiple(1, "wolf");
       this.level.enemySpeed += 10;
       var numberOfWaves:number = this.level.level + 2;
