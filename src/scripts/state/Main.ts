@@ -8,6 +8,7 @@ module JsrRevolution.State {
     private _topPanel:UI.TopPanel;
 
     create() {
+      this.input.keyboard.addKeyCapture(Phaser.Keyboard.BACKSPACE);
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
       this._map = new map.Map(this.game);
